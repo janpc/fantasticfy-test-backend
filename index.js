@@ -14,7 +14,6 @@ app.get('/products', async function(req, res, next) {
     const data = await getProductsPaginated(page, ipp);
     res.send(data);
   } catch (e) {
-    console.log(e);
     next(e);
   }
   
@@ -33,5 +32,5 @@ app.get('/products/:id', async function(req, res, next) {
 app.use(errorMiddleware);
 
 app.listen(config.app.port, () => {
-  console.log(`Example app listening on port ${config.app.port}`)
+  console.log(`App listening on port ${config.app.port}`)
 })
