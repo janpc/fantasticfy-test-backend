@@ -1,5 +1,6 @@
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const { config } = require("../config");
+const { normalizeProduct, normalizeProducts } = require('./normalizeResponse');
 
 async function getAllProducts() {
   const res = await fetch(config.shopify.url, {
@@ -17,10 +18,10 @@ async function getProductById(id) {
   const productById = products.find(product => product.id == id);
 
   if (!productById) {
-    throw new Error(404);
+    throw {code: 404, message: 'Product not found!'};
   }
 
-  return productById;
+  return normalizeProduct(productById);
 }
 
 async function getProductsPaginated(page = 1, ipp = 20) {
@@ -34,16 +35,14 @@ async function getProductsPaginated(page = 1, ipp = 20) {
   const totalPages = Math.ceil(length / ipp);
 
   if (page > totalPages) {
-    throw new Error(404);
+    throw {code: 404, message: 'Page not found!'};
   }
 
   const startPage = (page - 1) * ipp;
   const endPage = page * ipp
   const paginatedProducts = products.slice(startPage, endPage);
 
-  console.log({totalPages, ipp, page, totalProducts: length, products: paginatedProducts});
-
-  return { totalPages, ipp, page, totalProducts: length, products: paginatedProducts }
+  return { totalPages, ipp, page, totalProducts: length, products: normalizeProducts(paginatedProducts) }
 }
 
 module.exports = {

@@ -15,7 +15,7 @@ function normalizeProduct (product) {
 
 function normalizeProducts (products) {
   const normalizedProducts = [];
-  products.forEach((product) => {
+  products?.forEach((product) => {
     const normalizedProduct = normalizeProduct(product)
     normalizedProducts.push(normalizedProduct);
   })
