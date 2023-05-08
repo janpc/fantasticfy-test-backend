@@ -1,8 +1,6 @@
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const { config } = require("../config");
 
-console.log(config);
-
 async function getAllProducts() {
   const res = await fetch(config.shopify.url, {
     headers: {
@@ -25,7 +23,7 @@ async function getProductById(id) {
   return productById;
 }
 
-async function getProductsPaginated(page, ipp) {
+async function getProductsPaginated(page = 1, ipp = 20) {
   const products = await getAllProducts();
 
   if (!products) {
@@ -47,3 +45,8 @@ async function getProductsPaginated(page, ipp) {
 
   return { totalPages, ipp, page, totalProducts: length, products: paginatedProducts }
 }
+
+module.exports = {
+  getProductById,
+  getProductsPaginated
+};
