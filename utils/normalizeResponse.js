@@ -6,7 +6,7 @@ function normalizeProduct (product) {
     mainImage: product.image,
     images: product.images,
     minPrice: getMinPrice(product.variants),
-    options: product.options,
+    options: product.options[0],
     variants: product.variants
   };
 
